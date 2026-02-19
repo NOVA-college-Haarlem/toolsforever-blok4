@@ -10,16 +10,19 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-if ($_SESSION['role'] != 'administrator') {
+if ($_SESSION['role'] != 'admin') {
     echo "You are not allowed to view this page, please login as admin";
     exit;
 }
 
 $id = $_GET['id'];
 
-$sql = "SELECT * FROM users LEFT JOIN user_settings ON user_settings.user_id = users.id WHERE users.id =  $id";
-$result = mysqli_query($conn, $sql);
-$user = mysqli_fetch_assoc($result);
+$sql = "SELECT * FROM users LEFT JOIN user_settings ON user_settings.user_id = users.id WHERE users.id =  :id";
+$stmt = $conn->prepare($sql);
+$stmt->execute([
+    "id" => $id
+]);
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 
 require 'header.php';

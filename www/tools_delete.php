@@ -12,9 +12,12 @@ if(    isset($_GET['id'])     ){
 
     $id = $_GET["id"];
 
-    $sql = "DELETE FROM tools WHERE tool_id = $id";
+    $sql = "DELETE FROM tools WHERE tool_id = :id";
 
-    mysqli_query($conn, $sql);
+    $stmt = $conn->prepare($sql);
+    $stmt->execute([
+        "id" => $id
+    ]);
 
     header("location: tools_index.php");
 }

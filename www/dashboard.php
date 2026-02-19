@@ -9,8 +9,8 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 
-if ($_SESSION['role'] != 'administrator') {
-    echo "You are not allowed to view this page, please login as administrator";
+if ($_SESSION['role'] != 'admin') {
+    echo "You are not allowed to view this page, please login as admin";
     exit;
 }
 
@@ -20,19 +20,21 @@ require 'database.php';
 
 $sql = [];
 $query = "SELECT COUNT(id) AS total FROM users";
-$result = mysqli_query($conn, $query);
-$users = mysqli_fetch_assoc($result);
-
+$stmt = $conn->prepare($query);
+$stmt->execute();
+$users = $stmt->fetch(PDO::FETCH_ASSOC);
 array_push($sql, $query);
 
 $query = "SELECT COUNT(id) AS total FROM users WHERE role = 'employee'";
-$result = mysqli_query($conn, $query);
-$employees = mysqli_fetch_assoc($result);
+$stmt = $conn->prepare($query);
+$stmt->execute();
+$employees = $stmt->fetch(PDO::FETCH_ASSOC);
 array_push($sql, $query);
 
 $query = "SELECT COUNT(tool_id) AS total FROM tools";
-$result = mysqli_query($conn, $query);
-$tools = mysqli_fetch_assoc($result);
+$stmt = $conn->prepare($query);
+$stmt->execute();
+$tools = $stmt->fetch(PDO::FETCH_ASSOC);
 array_push($sql, $query);
 
 

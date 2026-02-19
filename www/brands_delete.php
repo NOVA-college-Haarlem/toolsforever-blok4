@@ -12,9 +12,15 @@ if(    isset($_GET['id'])     ){
 
     $id = $_GET["id"];
 
-    $sql = "DELETE FROM brands WHERE brand_id = $id";
+    $sql = "DELETE FROM brands WHERE brand_id = :id";
 
-    mysqli_query($conn, $sql);
+    $stmst = $conn->prepare($sql);
+    $stmst->execute(
+        [
+            "id" => $id
+        ]
+    );
+
 
     header("location: brands_index.php");
 }

@@ -6,18 +6,27 @@ if (isset($_POST['submit'])) {
             $emailForm = $_POST['email'];
             $passwordForm = $_POST['password'];
 
-            $conn = mysqli_connect('mariadb', 'root', 'password', 'tools4ever');
+            require 'database.php';
 
-            $sql = "SELECT * FROM users WHERE email='$emailForm'";
-            $result = mysqli_query($conn, $sql);
+            $sql = "SELECT * FROM users WHERE email= :email";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute([
+                "email" => $emailForm
+            ]);
+
+            $dbuser = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if(is_bool($dbuser))
+            {
+                die('no user found');
+            }
 
             //als de email bestaat dan is het resultaat groter dan 0
-            if (mysqli_num_rows($result) > 0) {
+            if (count($dbuser) > 0) {
+                
 
-                //resultaat gevonden? Dan maken we een user-array $dbuser
-                $dbuser = mysqli_fetch_assoc($result);
-
-                if ($dbuser['password'] == $passwordForm) {
+                // if ($dbuser['password'] == $passwordForm) {
+                if(password_verify($passwordForm, $dbuser['password'])){
 
                     session_start();
                     $_SESSION['user_id']    = $dbuser['id'];

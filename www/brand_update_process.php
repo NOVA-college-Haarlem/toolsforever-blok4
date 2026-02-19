@@ -19,51 +19,35 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
     exit;
 }
 
-if( !isset($_POST['name']) || 
-    !isset($_POST['category']) ||
-    !isset($_POST['brand']) ||
-    !isset($_POST['image'])
-    
+if( !isset($_POST['brand_name'])
+   
     ){
     echo "een van de gevraagde keys ontbreekt";
     exit;
 }
 
-$name = $_POST['name'];
-$category = $_POST['category'];
-$price = $_POST['price'];
-$brand = $_POST['brand'];
-$image = $_POST['image'];
+$name = $_POST['brand_name'];
+$id = $_POST['id'];
 
 if(empty($name)){
     echo "Naam mag niet leeg zijn";
     exit;
 }
 
-if(!is_numeric($price)){
-    echo "Price must be a number";
-    exit;
-}
-
-
-
-
 require 'database.php';
-$sql = "INSERT INTO tools (tool_name, tool_category, tool_price, tool_brand, tool_image) 
-                VALUES (:name, :category, :price, :brand, :image)";
+$sql = "UPDATE brands SET brand_name = :name WHERE brand_id = :id";
 $stmt = $conn->prepare($sql);
 $result = $stmt->execute(
     [
     "name" => $name,
-    "category" => $category,
-    "price" => $price,
-    "brand" => $brand,
-    "image" => $image
+    "id" => $id
+    
+  
 ]
 );
 
 if ($result) {
-    header("Location: tools_index.php");
+    header("Location: brands_index.php");
     exit;
 }
 

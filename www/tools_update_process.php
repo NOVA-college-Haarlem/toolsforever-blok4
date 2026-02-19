@@ -29,42 +29,38 @@ if( !isset($_POST['name']) ||
     exit;
 }
 
+require 'database.php';
+
+$id = $_POST['tool_id'];
 $name = $_POST['name'];
-$category = $_POST['category'];
-$price = $_POST['price'];
 $brand = $_POST['brand'];
+$category = $_POST['category'];
+$price = (int) $_POST['price'];
 $image = $_POST['image'];
 
-if(empty($name)){
-    echo "Naam mag niet leeg zijn";
-    exit;
-}
+$sql = "UPDATE tools SET 
+tool_name = :name,
+tool_brand = :brand,
+tool_category = :category,
+tool_price = :price,
+tool_image = :image
+WHERE tool_id = :id
+";
 
-if(!is_numeric($price)){
-    echo "Price must be a number";
-    exit;
-}
-
-
-
-
-require 'database.php';
-$sql = "INSERT INTO tools (tool_name, tool_category, tool_price, tool_brand, tool_image) 
-                VALUES (:name, :category, :price, :brand, :image)";
 $stmt = $conn->prepare($sql);
+
 $result = $stmt->execute(
     [
-    "name" => $name,
-    "category" => $category,
-    "price" => $price,
-    "brand" => $brand,
-    "image" => $image
-]
+        'name' => $name,
+        'brand' => $brand,
+        'category' => $category,
+        'price' => $price,
+        'image' => $image,
+        'id' => $id
+    ]
 );
 
-if ($result) {
-    header("Location: tools_index.php");
+if($result){
+    header("location: tools_edit.php?id=$id");
     exit;
 }
-
-echo "Something went wrong";
