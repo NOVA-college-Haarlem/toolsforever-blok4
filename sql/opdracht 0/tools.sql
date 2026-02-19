@@ -4,7 +4,7 @@ CREATE TABLE tools (
     tool_category VARCHAR(50) NOT NULL,
     tool_price DECIMAL(10, 2) NOT NULL,
     tool_brand VARCHAR(50) NOT NULL,
-    tool_image VARCHAR(255) NOT NULL,
+    tool_image VARCHAR(255) NULL,
     PRIMARY KEY (tool_id)
 );
 
