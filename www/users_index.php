@@ -13,7 +13,7 @@ if ($_SESSION['role'] != 'admin') {
 }
 require 'database.php';
 
-$sql = "SELECT * FROM users";
+$sql = "SELECT * FROM users WHERE deleted_at IS NULL";
 $stmt = $conn->prepare($sql);
 $stmt->execute();
 $users = $stmt->fetchAll(PDO::FETCH_ASSOC);

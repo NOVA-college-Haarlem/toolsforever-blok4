@@ -30,7 +30,7 @@ require 'header.php';
                         <p><?php echo $tool['tool_category'] ?></p>
                         <p>€ <?php echo number_format($tool['tool_price'] / 100, 2, ',', '') ?></p>
                         <p>
-                            <a href="add_to_cart.php?id=<?php echo $tool['tool_id']; ?>" class="btn">Bestel</a>
+                            <a href="add_to_cart.php?id=<?php echo $tool['tool_id']; ?>" class="btn" id="bestelBtn">Bestel</a>
                         </p>
                     </div>
                 </div>
@@ -41,4 +41,40 @@ require 'header.php';
         <?php endif; ?>
     </div>
 </main>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const bestelBtn = document.querySelector('#bestelBtn');//anchor tag
+        const countSpan = document.querySelector('.cart-count');
+        if (bestelBtn && countSpan) {
+            bestelBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                let count = parseInt(countSpan.textContent, 10);
+                countSpan.textContent = count + 1;
+
+                // AJAX call naar de server maken
+                fetch('add_to_cart.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        tool_id: <?php echo $tool['tool_id']; ?>
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // eventueel extra feedback aan gebruiker
+                        console.log(data)
+                    } else {
+                        alert('Er is iets misgegaan bij het toevoegen aan de winkelwagen.');
+                    }
+                })
+                .catch(error => {
+                    console.table('Serverfout: ' + error);
+                });
+            });
+        }
+    });
+</script>
 <?php require 'footer.php' ?>

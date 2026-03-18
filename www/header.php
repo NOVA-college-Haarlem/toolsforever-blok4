@@ -20,6 +20,9 @@
                 <li><a href="index.php">Home</a></li>
                 <li><a href="brands_index.php">Merken</a></li>
                 <li><a href="">Winkelmand</a></li>
+                <span class="cart-count">
+                    <?php echo $_SESSION['cart_count'] ?? 0 ?>
+                </span>
                 <?php if (isset($_SESSION['user_id'])) : ?>
                     <li><a href="dashboard.php">Dashboard</a></li>
                     <li class="dropdown">
@@ -27,6 +30,7 @@
                         <div class="dropdown-content">
                             <a href="users_index.php">Bekijken</a>
                             <a href="users_create.php">Toevoegen</a>
+                            <a href="users_index_deleted.php">Verwijderde gebruikers</a>
                         </div>
                     </li>
                     <li class="dropdown">

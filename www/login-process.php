@@ -8,7 +8,7 @@ if (isset($_POST['submit'])) {
 
             require 'database.php';
 
-            $sql = "SELECT * FROM users WHERE email= :email";
+            $sql = "SELECT * FROM users WHERE email= :email AND deleted_at IS NULL";
             $stmt = $conn->prepare($sql);
             $stmt->execute([
                 "email" => $emailForm
