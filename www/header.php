@@ -1,3 +1,24 @@
+<?php
+require('database.php');
+
+// session_start();
+
+
+$userid = $_SESSION['user_id'];
+
+$sql = "SELECT SUM(cart.quantity) AS count FROM cart WHERE cart.user_id = :userid";
+$stmt = $conn->prepare($sql);
+$result = $stmt->execute([
+    "userid" => $userid
+]);
+
+$count = $stmt->fetch(PDO::FETCH_ASSOC);
+
+
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,9 +40,9 @@
             <ul>
                 <li><a href="index.php">Home</a></li>
                 <li><a href="brands_index.php">Merken</a></li>
-                <li><a href="">Winkelmand</a></li>
+                <li><a href="cart.php">Winkelmand</a></li>
                 <span class="cart-count">
-                    <?php echo $_SESSION['cart_count'] ?? 0 ?>
+                    <?php echo $count["count"] ?>
                 </span>
                 <?php if (isset($_SESSION['user_id'])) : ?>
                     <li><a href="dashboard.php">Dashboard</a></li>
