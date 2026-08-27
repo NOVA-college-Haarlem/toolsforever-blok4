@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 if (isset($_POST['submit'])) {
     if (isset($_POST['email']) && isset($_POST['password'])) {
         if (!empty($_POST['email']) && !empty($_POST['password'])) {
@@ -19,7 +21,6 @@ if (isset($_POST['submit'])) {
 
                 if ($dbuser['password'] == $passwordForm) {
 
-                    session_start();
                     $_SESSION['user_id']    = $dbuser['id'];
                     $_SESSION['email']      = $dbuser['email'];
                     $_SESSION['firstname']  = $dbuser['firstname'];

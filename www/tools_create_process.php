@@ -8,7 +8,7 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-if ($_SESSION['role'] != 'administrator') {
+if ($_SESSION['role'] != 'admin') {
     echo "You are not allowed to view this page, please login as admin";
     exit;
 }
@@ -22,7 +22,7 @@ require 'database.php';
 
 $name = $_POST['name'];
 $category = $_POST['category'];
-$price = $_POST['price'];
+$price = $_POST['price'] * 100;
 $brand = $_POST['brand'];
 $image = $_POST['image'];
 
@@ -31,7 +31,7 @@ $sql = "INSERT INTO tools (tool_name, tool_category, tool_price, tool_brand, too
 $result = mysqli_query($conn, $sql);
 
 if ($result) {
-    header("Location: tool_index.php");
+    header("Location: tools_index.php");
     exit;
 }
 

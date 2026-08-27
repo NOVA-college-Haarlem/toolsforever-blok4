@@ -1,32 +1,17 @@
 <?php
 session_start();
-if(isset($_SESSION['voornaam']) && isset($_SESSION['achternaam'] )){
-    echo $_SESSION['voornaam'] . " " . $_SESSION['achternaam'];
-}
+require 'database.php';
 
+$tools = [];
 
-$time = time();
-echo date('d-m-Y H:i:s', $time);
-
-if(isset($_GET['search_submit'] )){
-    if(!empty($_GET['search'])){
-        require 'database.php';
+if (isset($_GET['search_submit'])) {
+    if (!empty($_GET['search'])) {
         $zoekterm = $_GET['search'];
-        $sql = "SELECT * FROM tools WHERE name LIKE '$zoekterm'";
+        $sql = "SELECT * FROM tools WHERE tool_name LIKE '%$zoekterm%'";
         $result = mysqli_query($conn, $sql);
         $tools = mysqli_fetch_all($result, MYSQLI_ASSOC);
     }
 }
-
-
-$sql = "SELECT COUNT(*) AS aantal FROM tools";
-$result = mysqli_query($conn, $sql);
-$resultaat_array = mysqli_fetch_assoc($result);
-$aantal = $resultaat_array['aantal'];
-echo $aantal
-
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">

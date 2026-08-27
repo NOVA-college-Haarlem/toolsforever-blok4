@@ -7,7 +7,7 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-if ($_SESSION['role'] != 'administrator') {
+if ($_SESSION['role'] != 'admin') {
     echo "You are not allowed to view this page, please login as admin";
     exit;
 }
@@ -19,7 +19,7 @@ require 'header.php';
 <main>
     <h1>Nieuw Gereedschap</h1>
     <div class="container">
-        <form action="tool_create_process.php" method="post">
+        <form action="tools_create_process.php" method="post">
             <div>
                 <label for="name">Naam:</label>
                 <input type="text" id="name" name="name">
